@@ -9,12 +9,14 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     
     let herseyAnnotation = MKPointAnnotation()
     let address = "Springfield"
     let geocoder = CLGeocoder()
+    
+    let locationManager = CLLocationManager()
     
 
     override func viewDidLoad() {
@@ -35,9 +37,27 @@ class ViewController: UIViewController {
                 self.mapView.addAnnotation(annotation)
             }
         }
+        
+        locationManager.requestWhenInUseAuthorization()
+        mapView.showsUserLocation = true
+        
+        mapView.delegate = self
     }
     
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        var pin = MKAnnotationView(annotation: annotation, reuseIdentifier: nil)
+        pin.image = UIImage(named: "hi")
+        pin.canShowCallout = true
+        let button = UIButton(type: .detailDisclosure)
+        pin.rightCalloutAccessoryView = button
+        return pin
+    }
     
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        let span = MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)
+        let region = MKCoordinateRegion(center: (view.annotation?.coordinate)!, span: span)
+        mapView.setRegion(region, animated: true)
+    }
 
 }
 
