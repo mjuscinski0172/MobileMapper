@@ -33,7 +33,13 @@
                             <constraint firstItem="vhw-8e-gWu" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="yUs-k4-7Ql"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="gWt-Fz-W8X"/>
+                    <navigationItem key="navigationItem" id="gWt-Fz-W8X">
+                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="refresh" id="HzH-Fg-egf">
+                            <connections>
+                                <action selector="whenButtonTapped:" destination="BYZ-38-t0r" id="3ag-21-XBp"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="mapView" destination="vhw-8e-gWu" id="ZMC-iR-Otn"/>
                     </connections>

@@ -18,6 +18,8 @@ class ViewController: UIViewController, MKMapViewDelegate {
     
     let locationManager = CLLocationManager()
     
+    var initialRegion: MKCoordinateRegion!
+    var isInitialMapLoad: Bool = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,9 +46,30 @@ class ViewController: UIViewController, MKMapViewDelegate {
         mapView.delegate = self
     }
     
+    @IBAction func whenButtonTapped(_ sender: UIBarButtonItem) {
+        mapView.setRegion(initialRegion, animated: true)
+    }
+    
+    func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
+        if isInitialMapLoad {
+            initialRegion = MKCoordinateRegion(center: mapView.centerCoordinate, span: mapView.region.span)
+            isInitialMapLoad = false
+        }
+    }
+    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if annotation.isEqual(mapView.userLocation)
+        {
+            return nil
+        }
         var pin = MKAnnotationView(annotation: annotation, reuseIdentifier: nil)
-        pin.image = UIImage(named: "hi")
+        if annotation.isEqual(herseyAnnotation)
+        {
+            pin.image = UIImage(named: "hi")
+        }
+        else {
+            pin = MKPinAnnotationView(annotation: annotation, reuseIdentifier: nil)
+        }
         pin.canShowCallout = true
         let button = UIButton(type: .detailDisclosure)
         pin.rightCalloutAccessoryView = button
